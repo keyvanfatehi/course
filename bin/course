@@ -6,10 +6,32 @@ findHereOrAbove(process.cwd(), 'course.json', function(err, filePath) {
   if (err) {
     console.error('No course.json found here or above. Create it with `course init`');
   } else {
-    var course = require(filePath);
-    for (var key in course) {
-      var value = course[key];
-      console.log(key, value);
-    }
+    showCourseInfo(require(filePath));
   }
 })
+
+function showCourseInfo(course) {
+  var p = console.log;
+
+  // basic info
+  p(course.department, course.number, course.title)
+  p(course.url)
+  p()
+
+  p('lectures');
+  var room = course.lecture.building+' '+course.lecture.room
+  for (var i=0; i<course.lecture.meetings.length; i++) {
+    var mtg = course.lecture.meetings[i]
+    p(mtg.day.slice(0,3), mtg.start, 'to', mtg.end, 'in', room)
+  }
+
+  p();
+
+  p('discussions');
+  var room = course.discussion.building+' '+course.discussion.room
+  for (var i=0; i<course.discussion.meetings.length; i++) {
+    var mtg = course.discussion.meetings[i]
+    p(mtg.day.slice(0,3), mtg.start, 'to', mtg.end, 'in', room)
+  }
+
+}
