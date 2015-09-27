@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "find-here-or-above": "^1.0.1",
+    "find-here-or-above": "^1.0.2",
     "minimist": "^1.2.0"
   }
 }
