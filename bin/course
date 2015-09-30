@@ -1,10 +1,17 @@
 #!/usr/bin/env node
 var findHereOrAbove = require('find-here-or-above')
+var open = require('open');
 var args = require('minimist')(process.argv);
 
 findHereOrAbove(process.cwd(), 'course.json', function(err, filePath) {
   if (err) {
     console.error('No course.json found here or above. Create it with `course init`');
+  } else if (args._[2] === 'get') {
+    var key = args._[3];
+    var obj = require(filePath);
+    console.log(obj[key]);
+  } else if (args._[2] === 'open') {
+    open(require(filePath)['url']);
   } else {
     showCourseInfo(require(filePath));
   }

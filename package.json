@@ -1,6 +1,6 @@
 {
   "name": "course.json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "find-here-or-above": "^1.0.2",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "open": "0.0.5"
   }
 }
