@@ -14,6 +14,7 @@
   "dependencies": {
     "find-here-or-above": "^1.0.2",
     "minimist": "^1.2.0",
-    "open": "0.0.5"
+    "open": "0.0.5",
+    "shelljs": "^0.5.3"
   }
 }

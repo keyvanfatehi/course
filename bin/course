@@ -2,18 +2,46 @@
 var findHereOrAbove = require('find-here-or-above')
 var open = require('open');
 var args = require('minimist')(process.argv);
+var sh = require('shelljs');
+var path = require('path');
 
 findHereOrAbove(process.cwd(), 'course.json', function(err, filePath) {
   if (err) {
     console.error('No course.json found here or above. Create it with `course init`');
-  } else if (args._[2] === 'get') {
-    var key = args._[3];
-    var obj = require(filePath);
-    console.log(obj[key]);
-  } else if (args._[2] === 'open') {
-    open(require(filePath)['url']);
   } else {
-    showCourseInfo(require(filePath));
+    var cmd = args._[2];
+    if (cmd === 'get') {
+      var key = args._[3];
+      var obj = require(filePath);
+      console.log(obj[key]);
+    } else if (cmd === 'set') {
+      var key = args._[3];
+      var val = args._[4];
+      var obj = require(filePath);
+      obj[key] = val
+      // TODO: persist and feedback
+    } else if (cmd === 'open') {
+      open(require(filePath)['url']);
+    } else if (cmd === 'mirror') {
+      var courseDir = path.dirname(filePath);
+      var obj = require(filePath);
+      var url = obj.url;
+      var extras = '';
+      if (obj.mirror) {
+        if (obj.mirror.reject && obj.mirror.reject.length > 0) {
+          extras+= '--reject-regex "'+obj.mirror.accept+'" '
+        }
+        if (obj.mirror.accept && obj.mirror.accept.length > 0) {
+          extras+= '--accept-regex "'+obj.mirror.accept+'" '
+        }
+      }
+      process.chdir(courseDir);
+      var wgetCmd = 'wget --wait 0.2 --level 1 --mirror --no-parent --convert-links '+extras+' '+url;
+      console.log(wgetCmd);
+      sh.exec(wgetCmd);
+    } else {
+      showCourseInfo(require(filePath));
+    }
   }
 })
 
